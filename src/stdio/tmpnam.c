@@ -18,7 +18,7 @@ char *tmpnam(char *buf)
 	for (try=0; try<MAXTRIES; try++) {
 		__randname(s+12);
 		r = lstat(s, &(struct stat){0});
-		if (r == -ENOENT) return strcpy(buf ? buf : internal, s);
+		if (r && errno == ENOENT) return strcpy(buf ? buf : internal, s);
 	}
 	return 0;
 }

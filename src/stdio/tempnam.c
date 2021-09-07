@@ -37,8 +37,9 @@ char *tempnam(const char *dir, const char *pfx)
 
 	for (try=0; try<MAXTRIES; try++) {
 		__randname(s+l-6);
+		/* TODO(nano) Should not touch errno */
 		r = lstat(s, &(struct stat){0});
-		if (r == -ENOENT) return strdup(s);
+		if (r && errno == ENOENT) return strdup(s);
 	}
 	return 0;
 }
